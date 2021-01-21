@@ -19,10 +19,12 @@ public class BlackjackGUI implements MouseMotionListener {
 	JButton standBtn = new JButton("Stand");
 	// default font
 	Font font = new Font("Georgia", Font.PLAIN, 30);
-	
+	// labels to hold the text score of the dealer and player
 	JLabel playerScore = new JLabel();
 	JLabel dealerScore = new JLabel();
-	
+	// labels to show how much money a player has and how much their bet is
+	JLabel bet = new JLabel();
+	JLabel balance = new JLabel();
 	
 	public BlackjackGUI() {
 		initialize();
@@ -42,6 +44,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		setHitBtn();
 		setStandBtn();
 		setScores();
+		setBalance();
 		setBackground();
 	}
 	
@@ -55,15 +58,17 @@ public class BlackjackGUI implements MouseMotionListener {
 	}
 	
 	private void setScores() {
-		dealerScore.setForeground(Color.WHITE);
 		// call dealer/player score methods
+		// add Bust! to a losing score
+		
+		dealerScore.setForeground(Color.WHITE);
 		dealerScore.setText("Dealer Score: ");
 		playerScore.setForeground(Color.WHITE);
 		playerScore.setText("Player Score: ");
 		
-		dealerScore.setBounds(456, 39, 224, 51);
+		dealerScore.setBounds(462, 40, 224, 51);
 		dealerScore.setFont(font);
-		playerScore.setBounds(456, 582, 237, 51);
+		playerScore.setBounds(462, 582, 237, 51);
 		playerScore.setFont(font);
 		
 		panel.add(dealerScore);
@@ -75,7 +80,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		hitBtn.setBackground(Color.BLACK);
 		hitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				// add another card
+				// calculate player score
 			}
 		});
 		hitBtn.addMouseMotionListener(this);
@@ -89,7 +95,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		standBtn.setBackground(Color.BLACK);
 		standBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				// calculate player and dealer score
+				// determine who won
 			}
 		});
 		standBtn.addMouseMotionListener(this);
@@ -101,7 +108,7 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setBet() {
 		enterBet.setEditable(true);
 		enterBet.setWrapStyleWord(true);
-		enterBet.setBounds(61, 546, 170, 39);
+		enterBet.setBounds(82, 549, 170, 39);
 		panel.add(enterBet);
 		enterBet.setLineWrap(true);
 		enterBet.setFont(font);
@@ -110,22 +117,34 @@ public class BlackjackGUI implements MouseMotionListener {
 		enterBetBtn.setBackground(Color.BLACK);
 		enterBetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				// use Player.setBet()
 			}
 		});
 		enterBetBtn.addMouseMotionListener(this);
-		enterBetBtn.setBounds(61, 614, 170, 51);
+		enterBetBtn.setBounds(82, 614, 170, 51);
 		enterBetBtn.setFont(font);
 		panel.add(enterBetBtn);
 	}
 	
-	public void mouseDragged(MouseEvent e) {
+	private void setBalance() {
+		bet.setForeground(Color.WHITE);
+		// use getBalance and getBet from Person
+		bet.setText("Bet: $");
+		balance.setForeground(Color.WHITE);
+		balance.setText("Balance: $");
 		
+		bet.setBounds(851, 563, 165, 44);
+		bet.setFont(font);
+		balance.setBounds(851, 617, 237, 44);
+		balance.setFont(font);
+		
+		panel.add(bet);
+		panel.add(balance);
 	}
 	
-	public void mouseMoved(MouseEvent e) {
-		
-	}
+	public void mouseDragged(MouseEvent e) {}
+	
+	public void mouseMoved(MouseEvent e) {}
 	
 	public static void main(String[] args) {
 		try {
