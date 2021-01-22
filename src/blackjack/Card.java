@@ -15,7 +15,7 @@ public class Card {
 	}
 	
 	public String toString() {
-		return _suit + " "+ _value;
+		return _suit + _value;
 	}
 	
 	String getSuit() {

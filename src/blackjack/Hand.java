@@ -6,7 +6,12 @@ public class Hand {
 	private ArrayList<Card> hand;
 	private int numCards;
 
+	Hand(){
+		hand = new ArrayList<Card>();
+		numCards = 0;
+	}
 	Hand(Card card1, Card card2){
+		hand = new ArrayList<Card>();
 		hand.add(card1);
 		hand.add(card2);
 		numCards = 2; //Not zero indexed numCards starts at 1
@@ -47,6 +52,11 @@ public class Hand {
 	
 	void addCard(Card card) {
 		hand.add(card);
+		numCards++;
+	}
+	
+	ArrayList <Card> getCards(){
+		return hand;
 	}
 
 }
