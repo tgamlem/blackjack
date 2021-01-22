@@ -100,6 +100,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		cardBack.setBounds(450, 170, 100, 130);
 		cardBack.setBorder(brd);
 		cardBack.setIcon(new ImageIcon(cardBackImg));
+		//cardBack.setVisible(false);
 		panel.add(cardBack);
 		
 		for (int i = 0; i < cards.size(); i++) {
@@ -120,8 +121,11 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setScores() {
 		// call dealer/player score methods
 		// add Bust! to a losing score
-		String pScore = "Player Score: ";
-		String dScore = "Dealer Score: ";
+		Person p = game.getPlayer(0);
+		int d = game.getDealerScore();
+		
+		String pScore = "Player Score: " + p.getHand().calcScore();
+		String dScore = "Dealer Score: " + d;
 		
 		dealerScore.setForeground(Color.WHITE);
 		dealerScore.setText(dScore);
@@ -132,6 +136,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		dealerScore.setFont(font);
 		playerScore.setBounds(462, 570, 237, 51);
 		playerScore.setFont(font);
+		
+		dealerScore.setVisible(false);
 		
 		panel.add(dealerScore);
 		panel.add(playerScore);
