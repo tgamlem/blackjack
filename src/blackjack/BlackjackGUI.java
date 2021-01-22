@@ -230,10 +230,12 @@ public class BlackjackGUI implements MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {}
 	
 	public static void main(String[] args) {
+
 		try {
 			BlackjackGUI game = new BlackjackGUI();
 		}
 		catch (Exception ex) {;}
+
 	}
 
 }
