@@ -213,6 +213,12 @@ public class BlackjackGUI implements MouseMotionListener {
 		enterBetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// use Player.setBet()
+				String b = enterBet.getText();
+				int bet = Integer.parseInt(b);
+				game.setBet(0, bet);
+				System.out.printf("Bet: $%d", game.getPlayer(0).getBet());
+				setBalance();
+				setBackground();
 			}
 		});
 		enterBetBtn.addMouseMotionListener(this);
@@ -224,9 +230,12 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setBalance() {
 		bet.setForeground(Color.WHITE);
 		// use getBalance and getBet from Person
-		bet.setText("Bet: $");
+		Person p = game.getPlayer(0);
+		String be = "Bet: $" + p.getBet();
+		String ba = "Balance: $" + p.getMoney();
+		bet.setText(be);
 		balance.setForeground(Color.WHITE);
-		balance.setText("Balance: $");
+		balance.setText(ba);
 		
 		bet.setBounds(851, 563, 165, 44);
 		bet.setFont(font);
