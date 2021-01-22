@@ -145,9 +145,11 @@ public class BlackjackGUI implements MouseMotionListener {
 	
 	private void setWinLoss() {
 		// call getter functions
-		String w = "Wins: ";
-		String p = "Push: ";
-		String l = "Busts: ";
+		Person p1 = game.getPlayer(0);
+		
+		String w = "Wins: " + p1.getWins();
+		String p = "Push: " + p1.getPushes();
+		String l = "Busts: " + p1.getLoses();
 		
 		wins.setForeground(Color.WHITE);
 		wins.setText(w);
