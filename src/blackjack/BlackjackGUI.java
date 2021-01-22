@@ -26,6 +26,11 @@ public class BlackjackGUI implements MouseMotionListener {
 	// labels to show how much money a player has and how much their bet is
 	JLabel bet = new JLabel();
 	JLabel balance = new JLabel();
+	JLabel wins = new JLabel();
+	JLabel pushes = new JLabel();
+	JLabel losses = new JLabel();
+	
+	Image cardBackImg =  Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/backCover.png"));
 	
 	public BlackjackGUI() {
 		initialize();
@@ -48,6 +53,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		setStandBtn();
 		setScores();
 		setBalance();
+		setWinLoss();
 		setBackground();
 	}
 	
@@ -83,6 +89,13 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setDealerCards() {
 		Image cardImg;
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
+		JLabel cardBack = new JLabel();
+		
+		cardBackImg = cardBackImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
+		cardBack.setBounds(450, 170, 100, 130);
+		cardBack.setBorder(brd);
+		cardBack.setIcon(new ImageIcon(cardBackImg));
+		panel.add(cardBack);
 		
 		for (int i = 0; i < 2/*loop for num cards in hand*/; i++) {
 			// get image string from dealer's hand
@@ -97,16 +110,19 @@ public class BlackjackGUI implements MouseMotionListener {
 			card.setIcon(new ImageIcon(cardImg));
 			panel.add(card);
 		}
+		
 	}
 	
 	private void setScores() {
 		// call dealer/player score methods
 		// add Bust! to a losing score
+		String pScore = "Player Score: ";
+		String dScore = "Dealer Score: ";
 		
 		dealerScore.setForeground(Color.WHITE);
-		dealerScore.setText("Dealer Score: ");
+		dealerScore.setText(dScore);
 		playerScore.setForeground(Color.WHITE);
-		playerScore.setText("Player Score: ");
+		playerScore.setText(pScore);
 		
 		dealerScore.setBounds(462, 40, 224, 51);
 		dealerScore.setFont(font);
@@ -115,6 +131,31 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 		panel.add(dealerScore);
 		panel.add(playerScore);
+	}
+	
+	private void setWinLoss() {
+		// call getter functions
+		String w = "Wins: ";
+		String p = "Push: ";
+		String l = "Busts: ";
+		
+		wins.setForeground(Color.WHITE);
+		wins.setText(w);
+		pushes.setForeground(Color.white);
+		pushes.setText(p);
+		losses.setForeground(Color.WHITE);
+		losses.setText(l);
+		
+		wins.setBounds(851, 112, 135, 57);
+		wins.setFont(font);
+		pushes.setBounds(851, 167, 135, 57);
+		pushes.setFont(font);
+		losses.setBounds(851, 227, 135, 57);
+		losses.setFont(font);
+		
+		panel.add(wins);
+		panel.add(pushes);
+		panel.add(losses);
 	}
 	
 	private void setHitBtn() {
