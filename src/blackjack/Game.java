@@ -23,11 +23,10 @@ public class Game {
 //		
 //	}
 	
-	String playerHit(int player){
+	void playerHit(int player){
 		Card nextCard = _deck.getCard();
 		_players.get(player).addCard(nextCard);
-		
-		return nextCard.toString();
+
 	}
 	
 	void playerStand(int player) {

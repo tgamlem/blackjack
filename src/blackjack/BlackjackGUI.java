@@ -34,7 +34,8 @@ public class BlackjackGUI implements MouseMotionListener {
 	JLabel losses = new JLabel();
 	
 	Image cardBackImg =  Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/backCover.png"));
-	
+	JLabel cardBack = new JLabel();
+		
 	public BlackjackGUI() {
 		initialize();
 		frame.setVisible(true);
@@ -92,7 +93,6 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setDealerCards() {
 		Image cardImg;
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
-		JLabel cardBack = new JLabel();
 		
 		ArrayList<String> cards = game.dealersCards();
 		
@@ -149,7 +149,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 		String w = "Wins: " + p1.getWins();
 		String p = "Push: " + p1.getPushes();
-		String l = "Busts: " + p1.getLoses();
+		String l = "Losses: " + p1.getLoses();
 		
 		wins.setForeground(Color.WHITE);
 		wins.setText(w);
@@ -177,6 +177,10 @@ public class BlackjackGUI implements MouseMotionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				// add another card
 				// calculate player score
+				game.playerHit(0);
+				setPlayerCards();
+				setScores();
+				setBackground();
 			}
 		});
 		hitBtn.addMouseMotionListener(this);
@@ -192,6 +196,14 @@ public class BlackjackGUI implements MouseMotionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				// calculate player and dealer score
 				// determine who won
+				game.playerStand(0);
+				cardBack.setVisible(false);
+				setPlayerCards();
+				setScores();
+				dealerScore.setVisible(true);
+				setWinLoss();
+				setBalance();
+				setBackground();
 			}
 		});
 		standBtn.addMouseMotionListener(this);
@@ -218,6 +230,7 @@ public class BlackjackGUI implements MouseMotionListener {
 				game.setBet(0, bet);
 				System.out.printf("Bet: $%d", game.getPlayer(0).getBet());
 				setBalance();
+				//TODO: figure out how to do this without having to call setBackground() again
 				setBackground();
 			}
 		});
