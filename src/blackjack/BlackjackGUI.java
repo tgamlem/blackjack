@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.util.ArrayList;
 
 public class BlackjackGUI implements MouseMotionListener {
+	Game game = new Game(1);
+	
 	// window for the GUI
 	JFrame frame = new JFrame("Blackjack");
 	// panel to display content within
@@ -69,12 +72,12 @@ public class BlackjackGUI implements MouseMotionListener {
 	private void setPlayerCards() {
 		Image cardImg;
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
+		ArrayList<String> cards = game.playersCards(0);
 		
-		for (int i = 0; i < 2/*loop for num cards in hand*/; i++) {
-			// get image string from player's hand
+		for (int i = 0; i < cards.size(); i++) {
 			JLabel card = new JLabel();
 			String cardPath = "/";
-			cardPath += "Diamond1" + ".png";
+			cardPath += cards.get(i) + ".png";
 			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
 			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 			card = new JLabel();
@@ -91,17 +94,18 @@ public class BlackjackGUI implements MouseMotionListener {
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
 		JLabel cardBack = new JLabel();
 		
+		ArrayList<String> cards = game.dealersCards();
+		
 		cardBackImg = cardBackImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 		cardBack.setBounds(450, 170, 100, 130);
 		cardBack.setBorder(brd);
 		cardBack.setIcon(new ImageIcon(cardBackImg));
 		panel.add(cardBack);
 		
-		for (int i = 0; i < 2/*loop for num cards in hand*/; i++) {
-			// get image string from dealer's hand
+		for (int i = 0; i < cards.size(); i++) {
 			JLabel card = new JLabel();
 			String cardPath = "/";
-			cardPath += "Diamond1" + ".png";
+			cardPath += cards.get(i) + ".png";
 			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
 			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 			card = new JLabel();
@@ -230,7 +234,6 @@ public class BlackjackGUI implements MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {}
 	
 	public static void main(String[] args) {
-
 		try {
 			BlackjackGUI game = new BlackjackGUI();
 		}
