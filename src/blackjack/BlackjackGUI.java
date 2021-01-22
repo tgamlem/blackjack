@@ -3,6 +3,7 @@ package blackjack;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class BlackjackGUI implements MouseMotionListener {
 	// window for the GUI
@@ -40,6 +41,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		panel.addMouseMotionListener(this);
 		panel.setLayout(null);
 		
+		setPlayerCards();
+		setDealerCards();
 		setBet();
 		setHitBtn();
 		setStandBtn();
@@ -57,6 +60,45 @@ public class BlackjackGUI implements MouseMotionListener {
 		panel.add(background);
 	}
 	
+	private void setPlayerCards() {
+		Image cardImg;
+		Border brd = BorderFactory.createLineBorder(Color.black, 2);
+		
+		for (int i = 0; i < 2/*loop for num cards in hand*/; i++) {
+			// get image string from player's hand
+			JLabel card = new JLabel();
+			String cardPath = "/";
+			cardPath += "Diamond1" + ".png";
+			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
+			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
+			card = new JLabel();
+			card.setBounds(450 + (i * 120), 380, 100, 130);
+			card.setBorder(brd);
+			card.setIcon(new ImageIcon(cardImg));
+			panel.add(card);
+		}
+		
+	}
+	
+	private void setDealerCards() {
+		Image cardImg;
+		Border brd = BorderFactory.createLineBorder(Color.black, 2);
+		
+		for (int i = 0; i < 2/*loop for num cards in hand*/; i++) {
+			// get image string from dealer's hand
+			JLabel card = new JLabel();
+			String cardPath = "/";
+			cardPath += "Diamond1" + ".png";
+			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
+			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
+			card = new JLabel();
+			card.setBounds(450 + (i * 120), 170, 100, 130);
+			card.setBorder(brd);
+			card.setIcon(new ImageIcon(cardImg));
+			panel.add(card);
+		}
+	}
+	
 	private void setScores() {
 		// call dealer/player score methods
 		// add Bust! to a losing score
@@ -68,7 +110,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 		dealerScore.setBounds(462, 40, 224, 51);
 		dealerScore.setFont(font);
-		playerScore.setBounds(462, 582, 237, 51);
+		playerScore.setBounds(462, 570, 237, 51);
 		playerScore.setFont(font);
 		
 		panel.add(dealerScore);
