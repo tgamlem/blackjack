@@ -262,16 +262,21 @@ public class BlackjackGUI implements MouseMotionListener {
 				// add another card
 				// calculate player score
 				game.playerHit(0);
-				//removeCards(playerCards, game.getPlayer(0).getHand().getCards().size() - 1);
+				removeCards(playerCards, game.getPlayer(0).getHand().getCards().size());
 				setPlayerCards();
 				setPlayerScore();
-				setBackground();
+				
 				if (game.getPlayer(0).getHand().calcScore() > 21) {
 					setDealerCards();
 					setDealerScore();
 					game.clearDealerHand();
+					game.playerStand(0);
+					setWinLoss();
+					cardBack.setVisible(false);
+					setBackground();
 					winLossDialog("You Bust!");
 				}
+				setBackground();
 			}
 		});
 		hitBtn.addMouseMotionListener(this);
@@ -287,18 +292,29 @@ public class BlackjackGUI implements MouseMotionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				// calculate player and dealer score
 				// determine who won
+				int pScore = game.getPlayer(0).getHand().calcScore();
 				game.playerStand(0);
 				cardBack.setVisible(false);
 				setPlayerCards();
-				//removeCards(dealerCards, game.dealersCards().size() - 1);
+				removeCards(dealerCards, game.dealersCards().size());
 				setDealerCards();
 				setDealerScore();
+				String dialog = "";
+				if (game.getDealerScore() > 21) {
+					dialog = "You Win!";
+				} else if (game.getDealerScore() > pScore && game.getDealerScore() < 22) {
+					dialog = "You Lost!";
+				} else if (game.getDealerScore() == pScore) {
+					dialog = "Push!";
+				} else {
+					dialog = "You Win!";
+				}
 				// clear dealer hand here
 				game.clearDealerHand();
 				setWinLoss();
 				setBalance();
 				setBackground();
-				winLossDialog("testing");
+				winLossDialog(dialog);
 			}
 		});
 		standBtn.addMouseMotionListener(this);

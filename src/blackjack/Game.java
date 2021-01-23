@@ -30,8 +30,10 @@ public class Game {
 	}
 	
 	void playerStand(int player) {
-		while(_dealer.play(_players.get(player).getHand().calcScore())) {
-			_dealer.addCard(_deck.getCard());
+		if (_players.get(player).getHand().calcScore() < 22) {
+			while(_dealer.play(_players.get(player).getHand().calcScore())) {
+				_dealer.addCard(_deck.getCard());
+			}
 		}
 		score();
 	}
