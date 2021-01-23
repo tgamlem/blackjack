@@ -33,6 +33,9 @@ public class BlackjackGUI implements MouseMotionListener {
 	JLabel pushes = new JLabel();
 	JLabel losses = new JLabel();
 	
+	ArrayList<JLabel> playerCards = new ArrayList<JLabel>();
+	ArrayList<JLabel> dealerCards = new ArrayList<JLabel>();
+	
 	Image cardBackImg =  Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/backCover.png"));
 	JLabel cardBack = new JLabel();
 		
@@ -69,6 +72,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		Image cardImg;
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
 		ArrayList<String> cards = game.playersCards(0);
+		int xPos = 50 * (cards.size() - 2);
 		
 		for (int i = 0; i < cards.size(); i++) {
 			JLabel card = new JLabel();
@@ -77,12 +81,23 @@ public class BlackjackGUI implements MouseMotionListener {
 			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
 			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 			card = new JLabel();
-			card.setBounds(450 + (i * 120), 380, 100, 130);
+			card.setBounds(590 + (i * 120) - xPos, 380, 100, 130);
 			card.setBorder(brd);
 			card.setIcon(new ImageIcon(cardImg));
 			panel.add(card);
+			playerCards.add(card);
 		}
 		
+	}
+	
+	private void removeCards(ArrayList<JLabel> cards, int numCards) {
+		int i = 0;
+		while (i < numCards - 1) {
+			cards.get(0).setVisible(false);
+			cards.remove(0);
+			i++;
+		}
+			
 	}
 	
 	private void setDealerCards() {
@@ -90,9 +105,10 @@ public class BlackjackGUI implements MouseMotionListener {
 		Border brd = BorderFactory.createLineBorder(Color.black, 2);
 		
 		ArrayList<String> cards = game.dealersCards();
+		int xPos = 50 * (cards.size() - 2);
 		
 		cardBackImg = cardBackImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
-		cardBack.setBounds(450, 170, 100, 130);
+		cardBack.setBounds(590, 170, 100, 130);
 		cardBack.setBorder(brd);
 		cardBack.setIcon(new ImageIcon(cardBackImg));
 		panel.add(cardBack);
@@ -104,10 +120,11 @@ public class BlackjackGUI implements MouseMotionListener {
 			cardImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource(cardPath));
 			cardImg = cardImg.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 			card = new JLabel();
-			card.setBounds(450 + (i * 120), 170, 100, 130);
+			card.setBounds(590 + (i * 120) - xPos, 170, 100, 130);
 			card.setBorder(brd);
 			card.setIcon(new ImageIcon(cardImg));
 			panel.add(card);
+			dealerCards.add(card);
 		}
 		
 	}
@@ -132,7 +149,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 		dealerScore.setForeground(Color.WHITE);
 		dealerScore.setText(dScore);
-		dealerScore.setBounds(462, 40, 224, 51);
+		dealerScore.setBounds(595, 60, 224, 51);
 		dealerScore.setFont(font);
 		panel.add(dealerScore);
 	}
@@ -172,6 +189,7 @@ public class BlackjackGUI implements MouseMotionListener {
 				// add another card
 				// calculate player score
 				game.playerHit(0);
+				removeCards(playerCards, game.getPlayer(0).getHand().getCards().size());
 				setPlayerCards();
 				setPlayerScore();
 				setBackground();
@@ -193,6 +211,7 @@ public class BlackjackGUI implements MouseMotionListener {
 				game.playerStand(0);
 				cardBack.setVisible(false);
 				setPlayerCards();
+				removeCards(dealerCards, game.dealersCards().size());
 				setDealerCards();
 				setDealerScore();
 				setWinLoss();
