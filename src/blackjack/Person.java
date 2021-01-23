@@ -37,7 +37,7 @@ public class Person {
 		_loses++;
 		//_money -= _bet;
 		clearHand();
-
+		_bet = 0;
 	}
 
 	void win() {
@@ -45,6 +45,7 @@ public class Person {
 		_money += _bet * 2;
 		_wins++;
 		clearHand();
+		_bet = 0;
 	}
 
 	void removeFromGame() {
@@ -57,6 +58,7 @@ public class Person {
 		_pushes++;
 		_money += _bet;
 		clearHand();
+		_bet = 0;
 	}
 
 	public void clearHand() {

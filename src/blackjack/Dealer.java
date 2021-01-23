@@ -49,6 +49,8 @@ public class Dealer {
 		return _hand.calcScore();
 	}
 	
-	
+	void clearHand() {
+		_hand.clearHand();
+	}
 
 }

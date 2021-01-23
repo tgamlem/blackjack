@@ -54,7 +54,10 @@ public class Game {
 				p.push();
 			}
 		}
-		
+	}
+	
+	void clearDealerHand() {
+		_dealer.clearHand();
 	}
 
 	void setBet(int player, int bet) {

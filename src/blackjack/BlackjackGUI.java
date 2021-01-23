@@ -14,24 +14,24 @@ public class BlackjackGUI implements MouseMotionListener {
 	// panel to display content within
 	JPanel panel = new JPanel();
 	// background of the panel
-	JLabel background = new JLabel();
+	JLabel background;
 	// text area for player to enter their bet
-	JTextArea enterBet = new JTextArea();
+	JTextArea enterBet;
 	// buttons to play the game
-	JButton enterBetBtn = new JButton("Enter Bet");
-	JButton hitBtn = new JButton("Hit");
-	JButton standBtn = new JButton("Stand");
+	JButton enterBetBtn;
+	JButton hitBtn;
+	JButton standBtn;
 	// default font
-	Font font = new Font("Georgia", Font.PLAIN, 30);
+	Font font;
 	// labels to hold the text score of the dealer and player
-	JLabel playerScore = new JLabel();
-	JLabel dealerScore = new JLabel();
+	JLabel playerScore;
+	JLabel dealerScore;
 	// labels to show how much money a player has and how much their bet is
-	JLabel bet = new JLabel();
-	JLabel balance = new JLabel();
-	JLabel wins = new JLabel();
-	JLabel pushes = new JLabel();
-	JLabel losses = new JLabel();
+	JLabel bet;
+	JLabel balance;
+	JLabel wins;
+	JLabel pushes;
+	JLabel losses;
 	
 	ArrayList<JLabel> playerCards = new ArrayList<JLabel>();
 	ArrayList<JLabel> dealerCards = new ArrayList<JLabel>();
@@ -44,7 +44,36 @@ public class BlackjackGUI implements MouseMotionListener {
 		frame.setVisible(true);
 	}
 	
+	private void initVars() {
+		// background of the panel
+		background = new JLabel();
+		// text area for player to enter their bet
+		enterBet = new JTextArea();
+		// buttons to play the game
+		enterBetBtn = new JButton("Enter Bet");
+		hitBtn = new JButton("Hit");
+		standBtn = new JButton("Stand");
+		// default font
+		font = new Font("Georgia", Font.PLAIN, 30);
+		// labels to hold the text score of the dealer and player
+		playerScore = new JLabel();
+		dealerScore = new JLabel();
+		// labels to show how much money a player has and how much their bet is
+		bet = new JLabel();
+		balance = new JLabel();
+		wins = new JLabel();
+		pushes = new JLabel();
+		losses = new JLabel();
+		
+		playerCards = new ArrayList<JLabel>();
+		dealerCards = new ArrayList<JLabel>();
+		
+		cardBackImg =  Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/backCover.png"));
+		cardBack = new JLabel();
+	}
+	
 	private void initialize() {
+		initVars();
 		frame.setBounds(120, 20, 1200, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -57,6 +86,44 @@ public class BlackjackGUI implements MouseMotionListener {
 		setBalance();
 		setWinLoss();
 		setBackground();
+	}
+	
+	private void reinitialize() {
+		game.setHands(1); // set new hand for player and dealer
+		// reset hands
+		playerCards.clear();
+		dealerCards.clear();
+		initVars();
+		
+		setBet();
+		setBalance();
+		setWinLoss();
+		setBackground();
+	}
+	
+	private void clearScreen() {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
+	}
+	
+	private void winLossDialog(String message) {
+		Object[] options = {"Play Again", "Restart"};
+		int decision = JOptionPane.showOptionDialog(null, message, "Dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(cardBackImg), options, options[1]);
+		//System.out.printf("decision value %d", decision);
+
+		if(decision == 0) {
+			//erase screen and reinitilize gui
+			clearScreen();
+			reinitialize();
+		} else if(decision == 1 || decision == -1) {
+			//erase screen and reinitialize gui and game
+			clearScreen();
+			game = new Game(1);
+			reinitialize();
+		} else {
+			System.out.printf("something went wrong! %n decision value %d", decision);
+		}
 	}
 	
 	private void setBackground() {
@@ -84,20 +151,26 @@ public class BlackjackGUI implements MouseMotionListener {
 			card.setBounds(590 + (i * 120) - xPos, 380, 100, 130);
 			card.setBorder(brd);
 			card.setIcon(new ImageIcon(cardImg));
-			panel.add(card);
 			playerCards.add(card);
+			panel.add(playerCards.get(i));
 		}
 		
 	}
 	
 	private void removeCards(ArrayList<JLabel> cards, int numCards) {
+		// TODO: delete jLabel instead of just setting visible to false
+//		int i = 0;
+//		while (i < numCards - 1) {
+//			panel.remove(cards.get(i));
+//			i++;
+//		}
+//		cards.clear();	
 		int i = 0;
 		while (i < numCards - 1) {
 			cards.get(0).setVisible(false);
 			cards.remove(0);
 			i++;
 		}
-			
 	}
 	
 	private void setDealerCards() {
@@ -123,8 +196,8 @@ public class BlackjackGUI implements MouseMotionListener {
 			card.setBounds(590 + (i * 120) - xPos, 170, 100, 130);
 			card.setBorder(brd);
 			card.setIcon(new ImageIcon(cardImg));
-			panel.add(card);
 			dealerCards.add(card);
+			panel.add(dealerCards.get(i));
 		}
 		
 	}
@@ -189,10 +262,16 @@ public class BlackjackGUI implements MouseMotionListener {
 				// add another card
 				// calculate player score
 				game.playerHit(0);
-				removeCards(playerCards, game.getPlayer(0).getHand().getCards().size());
+				//removeCards(playerCards, game.getPlayer(0).getHand().getCards().size() - 1);
 				setPlayerCards();
 				setPlayerScore();
 				setBackground();
+				if (game.getPlayer(0).getHand().calcScore() > 21) {
+					setDealerCards();
+					setDealerScore();
+					game.clearDealerHand();
+					winLossDialog("You Bust!");
+				}
 			}
 		});
 		hitBtn.addMouseMotionListener(this);
@@ -211,12 +290,15 @@ public class BlackjackGUI implements MouseMotionListener {
 				game.playerStand(0);
 				cardBack.setVisible(false);
 				setPlayerCards();
-				removeCards(dealerCards, game.dealersCards().size());
+				//removeCards(dealerCards, game.dealersCards().size() - 1);
 				setDealerCards();
 				setDealerScore();
+				// clear dealer hand here
+				game.clearDealerHand();
 				setWinLoss();
 				setBalance();
 				setBackground();
+				winLossDialog("testing");
 			}
 		});
 		standBtn.addMouseMotionListener(this);
