@@ -39,9 +39,17 @@ public class Game {
 	void score() {
 		for(Person p: _players) {
 			if(_dealer.getHand().calcScore() > p.getHand().calcScore()) {
-				p.bust();
+				if (_dealer.getHand().calcScore() > 21) {
+					p.win();
+				} else {
+					p.bust();
+				}
 			} else if (_dealer.getHand().calcScore() < p.getHand().calcScore()) {
-				p.win();
+				if (p.getHand().calcScore() > 21) {
+					p.bust();
+				} else {
+					p.win();
+				}
 			} else {
 				p.push();
 			}

@@ -83,7 +83,12 @@ public class Person {
 			_bet = _money;
 			_money = 0;
 			
-		} else {
+		}
+		else if (bet < 1) {
+			_bet = 1;
+			_money -= _bet;
+		}
+		else {
 			_bet = bet;
 			_money -= bet;
 		}

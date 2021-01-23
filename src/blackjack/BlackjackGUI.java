@@ -50,12 +50,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		panel.addMouseMotionListener(this);
 		panel.setLayout(null);
 		
-		setPlayerCards();
-		setDealerCards();
 		setBet();
-		setHitBtn();
-		setStandBtn();
-		setScores();
 		setBalance();
 		setWinLoss();
 		setBackground();
@@ -100,7 +95,6 @@ public class BlackjackGUI implements MouseMotionListener {
 		cardBack.setBounds(450, 170, 100, 130);
 		cardBack.setBorder(brd);
 		cardBack.setIcon(new ImageIcon(cardBackImg));
-		//cardBack.setVisible(false);
 		panel.add(cardBack);
 		
 		for (int i = 0; i < cards.size(); i++) {
@@ -118,29 +112,29 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 	}
 	
-	private void setScores() {
-		// call dealer/player score methods
-		// add Bust! to a losing score
+	private void setPlayerScore() {
 		Person p = game.getPlayer(0);
-		int d = game.getDealerScore();
 		
 		String pScore = "Player Score: " + p.getHand().calcScore();
+		
+		playerScore.setForeground(Color.WHITE);
+		playerScore.setText(pScore);
+		playerScore.setBounds(595, 571, 237, 51);
+		playerScore.setFont(font);
+		
+		panel.add(playerScore);
+	}
+	
+	private void setDealerScore() {
+		int d = game.getDealerScore();
+		
 		String dScore = "Dealer Score: " + d;
 		
 		dealerScore.setForeground(Color.WHITE);
 		dealerScore.setText(dScore);
-		playerScore.setForeground(Color.WHITE);
-		playerScore.setText(pScore);
-		
 		dealerScore.setBounds(462, 40, 224, 51);
 		dealerScore.setFont(font);
-		playerScore.setBounds(462, 570, 237, 51);
-		playerScore.setFont(font);
-		
-		dealerScore.setVisible(false);
-		
 		panel.add(dealerScore);
-		panel.add(playerScore);
 	}
 	
 	private void setWinLoss() {
@@ -158,11 +152,11 @@ public class BlackjackGUI implements MouseMotionListener {
 		losses.setForeground(Color.WHITE);
 		losses.setText(l);
 		
-		wins.setBounds(851, 112, 135, 57);
+		wins.setBounds(82, 79, 135, 57);
 		wins.setFont(font);
-		pushes.setBounds(851, 167, 135, 57);
+		pushes.setBounds(82, 134, 135, 57);
 		pushes.setFont(font);
-		losses.setBounds(851, 227, 135, 57);
+		losses.setBounds(82, 194, 135, 57);
 		losses.setFont(font);
 		
 		panel.add(wins);
@@ -179,12 +173,12 @@ public class BlackjackGUI implements MouseMotionListener {
 				// calculate player score
 				game.playerHit(0);
 				setPlayerCards();
-				setScores();
+				setPlayerScore();
 				setBackground();
 			}
 		});
 		hitBtn.addMouseMotionListener(this);
-		hitBtn.setBounds(408, 643, 142, 51);
+		hitBtn.setBounds(541, 644, 142, 51);
 		hitBtn.setFont(font);
 		panel.add(hitBtn);
 	}
@@ -199,15 +193,15 @@ public class BlackjackGUI implements MouseMotionListener {
 				game.playerStand(0);
 				cardBack.setVisible(false);
 				setPlayerCards();
-				setScores();
-				dealerScore.setVisible(true);
+				setDealerCards();
+				setDealerScore();
 				setWinLoss();
 				setBalance();
 				setBackground();
 			}
 		});
 		standBtn.addMouseMotionListener(this);
-		standBtn.setBounds(604, 643, 142, 51);
+		standBtn.setBounds(737, 644, 142, 51);
 		standBtn.setFont(font);
 		panel.add(standBtn);
 	}
@@ -228,8 +222,12 @@ public class BlackjackGUI implements MouseMotionListener {
 				String b = enterBet.getText();
 				int bet = Integer.parseInt(b);
 				game.setBet(0, bet);
-				System.out.printf("Bet: $%d", game.getPlayer(0).getBet());
 				setBalance();
+				setPlayerCards();
+				setDealerCards();
+				setPlayerScore();
+				setHitBtn();
+				setStandBtn();
 				//TODO: figure out how to do this without having to call setBackground() again
 				setBackground();
 			}
@@ -250,9 +248,9 @@ public class BlackjackGUI implements MouseMotionListener {
 		balance.setForeground(Color.WHITE);
 		balance.setText(ba);
 		
-		bet.setBounds(851, 563, 165, 44);
+		bet.setBounds(82, 414, 165, 44);
 		bet.setFont(font);
-		balance.setBounds(851, 617, 237, 44);
+		balance.setBounds(82, 468, 237, 44);
 		balance.setFont(font);
 		
 		panel.add(bet);
