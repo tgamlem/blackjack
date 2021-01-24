@@ -277,7 +277,11 @@ public class BlackjackGUI implements MouseMotionListener {
 					setWinLoss();
 					cardBack.setVisible(false);
 					setBackground();
-					winLossDialog("You Bust!");
+					if (game.getPlayer(0).getMoney() == 0) {
+						outOfMoney("Bust! You are out of money!");
+					} else {
+						winLossDialog("You Bust!");
+					}
 				} else if (game.getPlayer(0).getHand().calcScore() == 21) {
 					stand();
 				}
