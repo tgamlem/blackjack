@@ -126,6 +126,14 @@ public class BlackjackGUI implements MouseMotionListener {
 		}
 	}
 	
+	private void outOfMoney(String message) {
+		Object[] options = {"Restart"};
+		int decision = JOptionPane.showOptionDialog(null, message, "Please Restart", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(cardBackImg), options, options[0]);
+		clearScreen();
+		game = new Game(1);
+		reinitialize();
+	}
+	
 	private void setBackground() {
 		Image backgroundImg = Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/background.png"));
 		backgroundImg = backgroundImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
@@ -157,16 +165,11 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 	}
 	
-	private void removeCards(ArrayList<JLabel> cards, int numCards) {
+	private void removeCards(ArrayList<JLabel> cards) {
 		// TODO: delete jLabel instead of just setting visible to false
-//		int i = 0;
-//		while (i < numCards - 1) {
-//			panel.remove(cards.get(i));
-//			i++;
-//		}
-//		cards.clear();	
 		int i = 0;
-		while (i < numCards - 1) {
+		int numCards = cards.size();
+		while (i < numCards) {
 			cards.get(0).setVisible(false);
 			cards.remove(0);
 			i++;
@@ -262,7 +265,7 @@ public class BlackjackGUI implements MouseMotionListener {
 				// add another card
 				// calculate player score
 				game.playerHit(0);
-				removeCards(playerCards, game.getPlayer(0).getHand().getCards().size());
+				removeCards(playerCards);
 				setPlayerCards();
 				setPlayerScore();
 				
@@ -275,6 +278,8 @@ public class BlackjackGUI implements MouseMotionListener {
 					cardBack.setVisible(false);
 					setBackground();
 					winLossDialog("You Bust!");
+				} else if (game.getPlayer(0).getHand().calcScore() == 21) {
+					stand();
 				}
 				setBackground();
 			}
@@ -290,37 +295,51 @@ public class BlackjackGUI implements MouseMotionListener {
 		standBtn.setBackground(Color.BLACK);
 		standBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// calculate player and dealer score
-				// determine who won
-				int pScore = game.getPlayer(0).getHand().calcScore();
-				game.playerStand(0);
-				cardBack.setVisible(false);
-				setPlayerCards();
-				removeCards(dealerCards, game.dealersCards().size());
-				setDealerCards();
-				setDealerScore();
-				String dialog = "";
-				if (game.getDealerScore() > 21) {
-					dialog = "You Win!";
-				} else if (game.getDealerScore() > pScore && game.getDealerScore() < 22) {
-					dialog = "You Lost!";
-				} else if (game.getDealerScore() == pScore) {
-					dialog = "Push!";
-				} else {
-					dialog = "You Win!";
-				}
-				// clear dealer hand here
-				game.clearDealerHand();
-				setWinLoss();
-				setBalance();
-				setBackground();
-				winLossDialog(dialog);
+				stand();
 			}
 		});
 		standBtn.addMouseMotionListener(this);
 		standBtn.setBounds(737, 644, 142, 51);
 		standBtn.setFont(font);
 		panel.add(standBtn);
+	}
+	
+	private void stand() {
+		// calculate player and dealer score
+		// determine who won
+		int pScore = game.getPlayer(0).getHand().calcScore();
+		boolean moneyFlag = false;
+		game.playerStand(0);
+		cardBack.setVisible(false);
+		setPlayerCards();
+		removeCards(dealerCards);
+		setDealerCards();
+		setDealerScore();
+		String dialog = "";
+		if (game.getDealerScore() > 21) {
+			dialog = "You Win!";
+		} else if (game.getDealerScore() > pScore && game.getDealerScore() < 22) {
+			if (game.getPlayer(0).getMoney() == 0) {
+				dialog = "You are out of money!";
+				moneyFlag = true;
+			} else {
+				dialog = "You Lost!";
+			}
+		} else if (game.getDealerScore() == pScore) {
+			dialog = "Push!";
+		} else {
+			dialog = "You Win!";
+		}
+		// clear dealer hand here
+		game.clearDealerHand();
+		setWinLoss();
+		setBalance();
+		setBackground();
+		if (moneyFlag) {
+			outOfMoney(dialog);
+		} else {
+			winLossDialog(dialog);
+		}
 	}
 	
 	private void setBet() {
