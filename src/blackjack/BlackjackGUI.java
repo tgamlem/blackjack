@@ -354,7 +354,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		enterBet.setLineWrap(true);
 		enterBet.setFont(font);
 		enterBetBtn.setForeground(Color.WHITE);
-		
+
 		enterBetBtn.setBackground(Color.BLACK);
 		enterBetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

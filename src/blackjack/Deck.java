@@ -2,11 +2,18 @@ package blackjack;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * Deck class which creates 52 cards and shuffles them also provides getters and setters and toString
+ * @author zakrispierson
+ *
+ */
 public class Deck {
 	private ArrayList<Card> deck;
 	private int nextCard;
 
+	/**
+	 * Constructor which create 52 cards and shuffles them
+	 */
 	Deck() {
 		deck = new ArrayList<Card>();
 		String suit = "";
@@ -30,7 +37,9 @@ public class Deck {
 		nextCard = 0;
 
 	}
-
+	/**
+	 * Shuffles the cards randomly
+	 */
 	void shuffle() {
 		Random rnd = new Random();
 		// For help with deck randomization I used
@@ -43,11 +52,16 @@ public class Deck {
 
 		}
 	}
-
+	/**
+	 * Returns the next card in the deck
+	 * @return Card
+	 */
 	Card getCard() {
 		return deck.get(nextCard++);	
 	}
-	
+	/**
+	 * Prints all the cards in the deck used for debugging
+	 */
 	public String toString() {
 		String details = "Next Card is " + nextCard +"\n";
 		for(Card c : deck) {
