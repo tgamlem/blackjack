@@ -46,7 +46,11 @@ public class BlackjackGUI implements MouseMotionListener {
 		
 	public BlackjackGUI() {
 		initialize();
+	}
+	
+	public void showUI() {
 		frame.setVisible(true);
+
 	}
 	
 	/**
@@ -67,7 +71,7 @@ public class BlackjackGUI implements MouseMotionListener {
 		standBtn = new JButton("Stand");
 		
 		// default font
-		font = new Font("Georgia", Font.PLAIN, 30);
+		font = new Font("Georgia", Font.PLAIN, 28);
 		
 		// labels to hold the text score of the dealer and player
 		playerScore = new JLabel();
@@ -381,6 +385,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		// set what the button looks like
 		hitBtn.setForeground(Color.WHITE);
 		hitBtn.setBackground(Color.BLACK);
+		hitBtn.setOpaque(true);
+		hitBtn.setBorderPainted(false);
 		
 		// set logic for when the button is pressed
 		hitBtn.addActionListener(new ActionListener() {
@@ -444,6 +450,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		// set what the button looks like
 		standBtn.setForeground(Color.WHITE);
 		standBtn.setBackground(Color.BLACK);
+		standBtn.setOpaque(true); //code necessary for buttons to show up on mac
+		standBtn.setBorderPainted(false); //https://stackoverflow.com/questions/1065691/how-to-set-the-background-color-of-a-jbutton-on-the-mac-os
 		
 		// allow for the button to be pressed
 		standBtn.addActionListener(new ActionListener() {
@@ -531,6 +539,8 @@ public class BlackjackGUI implements MouseMotionListener {
 		// set the display of the button
 		enterBetBtn.setForeground(Color.WHITE);
 		enterBetBtn.setBackground(Color.BLACK);
+		enterBetBtn.setOpaque(true);
+		enterBetBtn.setBorderPainted(false);
 		
 		// logic for what the button does when it is pressed
 		enterBetBtn.addActionListener(new ActionListener() {
@@ -609,9 +619,10 @@ public class BlackjackGUI implements MouseMotionListener {
 	public static void main(String[] args) {
 		try {
 			BlackjackGUI game = new BlackjackGUI(); // GUI instance
+			game.showUI();
 		}
 		catch (Exception ex) {;}
-
+		
 	}
 
 }
