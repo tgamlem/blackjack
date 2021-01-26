@@ -5,8 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.util.ArrayList;
-
-// a graphical user interface for the game of blackjack
+/**
+ *  a graphical user interface for the game of blackjack
+ * @author zakrispierson and TylerGamlem
+ *
+ */
 public class BlackjackGUI implements MouseMotionListener {
 	// game object to keep track of all objects for blackjack instance
 	Game game = new Game(1);
@@ -43,11 +46,15 @@ public class BlackjackGUI implements MouseMotionListener {
 	// back side of a card
 	Image cardBackImg =  Toolkit.getDefaultToolkit().getImage(BlackjackGUI.class.getResource("/backCover.png"));
 	JLabel cardBack = new JLabel();
-		
+		/**
+		 * Initialize game
+		 */
 	public BlackjackGUI() {
 		initialize();
 	}
-	
+	/**
+	 * Call this method to show UI
+	 */
 	public void showUI() {
 		frame.setVisible(true);
 
@@ -541,10 +548,12 @@ public class BlackjackGUI implements MouseMotionListener {
 		enterBetBtn.setBackground(Color.BLACK);
 		enterBetBtn.setOpaque(true);
 		enterBetBtn.setBorderPainted(false);
-		
 		// logic for what the button does when it is pressed
 		enterBetBtn.addActionListener(new ActionListener() {
+			int buttonClicks =0;
 			public void actionPerformed(ActionEvent arg0) {
+				//System.out.printf();
+				if(buttonClicks < 1) {
 				// get the text from the text area and parse it for an integer
 				String b = enterBet.getText();
 				// replace all non numbers with nothing, found at the link below
@@ -568,6 +577,9 @@ public class BlackjackGUI implements MouseMotionListener {
 					setHitBtn();
 					setStandBtn();
 					setBackground();
+					buttonClicks++;
+					
+				}
 				}
 			}
 		});
@@ -609,13 +621,20 @@ public class BlackjackGUI implements MouseMotionListener {
 		panel.add(balance);
 	}
 	
-	// check if the mouse has dragged something
+	/**
+	 * check if the mouse has dragged something
+	 */
 	public void mouseDragged(MouseEvent e) {}
 	
-	// check if the mouse has moved something
+	/**
+	 * check if the mouse has moved something
+	 */
 	public void mouseMoved(MouseEvent e) {}
 	
-	
+	/**
+	 * Run game
+	 * @param args main's parameters
+	 */
 	public static void main(String[] args) {
 		try {
 			BlackjackGUI game = new BlackjackGUI(); // GUI instance
